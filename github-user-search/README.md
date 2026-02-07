@@ -1,3 +1,10 @@
+# GitHub Repo
+https://github.com/oluwadamilola-olaniyans-projects/alx-fe-reactjs
+
+# live Demo
+https://alx-fe-reactjs-alpha-three.vercel.app
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
