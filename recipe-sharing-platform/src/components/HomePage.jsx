@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import recipesData from "../data.json";
+import { Link } from "react-router-dom";
+
 
 function HomePage() {
   const [recipes, setRecipes] = useState([]);
@@ -13,6 +15,13 @@ function HomePage() {
       <h1 className="text-3xl font-bold text-center mb-8">
         Recipe Sharing Platform 🍲
       </h1>
+      <Link
+  to={`/recipe/${recipe.id}`}
+  className="mt-4 inline-block text-blue-500 hover:underline"
+>
+  View Recipe →
+</Link>
+
 
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {recipes.map((recipe) => (
