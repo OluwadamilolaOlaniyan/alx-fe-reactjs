@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 function AddRecipeForm({ onAddRecipe }) {
@@ -7,10 +6,8 @@ function AddRecipeForm({ onAddRecipe }) {
   const [instructions, setInstructions] = useState("");
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Validation
+  // ✅ Validation function
+  const validate = () => {
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required";
     if (!ingredients.trim() || ingredients.split("\n").length < 2)
@@ -18,12 +15,18 @@ function AddRecipeForm({ onAddRecipe }) {
     if (!instructions.trim() || instructions.split("\n").length < 1)
       newErrors.instructions = "Provide preparation steps";
 
-    setErrors(newErrors);
+    return newErrors;
+  };
 
-    if (Object.keys(newErrors).length === 0) {
-      // Submit the recipe
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const validationErrors = validate(); // use the validate function
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
       onAddRecipe({
-        id: Date.now(), // simple unique id
+        id: Date.now(),
         title,
         ingredients: ingredients.split("\n"),
         instructions: instructions.split("\n"),
@@ -33,6 +36,7 @@ function AddRecipeForm({ onAddRecipe }) {
       setTitle("");
       setIngredients("");
       setInstructions("");
+      setErrors({});
     }
   };
 
@@ -82,7 +86,6 @@ function AddRecipeForm({ onAddRecipe }) {
           {errors.instructions && <p className="text-red-500 text-sm mt-1">{errors.instructions}</p>}
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="bg-blue-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-600 transition-colors w-full sm:w-auto"
