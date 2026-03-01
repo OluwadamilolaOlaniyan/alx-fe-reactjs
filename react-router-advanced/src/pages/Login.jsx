@@ -1,6 +1,10 @@
+import useAuth from "../hooks/useAuth";
+
 function Login() {
+  const { login } = useAuth();
+
   const handleLogin = () => {
-    localStorage.setItem("isAuthenticated", "true");
+    login();
     alert("Logged in!");
   };
 
