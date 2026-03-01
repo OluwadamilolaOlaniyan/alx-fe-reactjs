@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const fetchPosts = async () => {
   const response = await fetch(
@@ -12,33 +12,27 @@ const fetchPosts = async () => {
   return response.json();
 };
 
-const PostsComponent = () => {
-  const {
-    data,
-    error,
-    isLoading,
-    isError,
-    refetch,
-    isFetching,
-  } = useQuery("posts", fetchPosts, {
-    staleTime: 1000 * 60 * 2, // 2 minutes cache freshness
+function PostsComponent() {
+  const { data, error, isLoading, isError, refetch } = useQuery({
+    queryKey: ["posts"],
+    queryFn: fetchPosts,
+    cacheTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 2,
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
   });
 
-  if (isLoading) return <h2>Loading posts...</h2>;
-
+  if (isLoading) return <h2>Loading...</h2>;
   if (isError) return <h2>Error: {error.message}</h2>;
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Posts from JSONPlaceholder</h2>
-
-      <button onClick={() => refetch()}>
-        {isFetching ? "Refreshing..." : "Refetch Posts"}
-      </button>
+    <div>
+      <h2>Posts</h2>
+      <button onClick={() => refetch()}>Refetch Posts</button>
 
       <ul>
         {data.slice(0, 10).map((post) => (
-          <li key={post.id} style={{ marginBottom: "15px" }}>
+          <li key={post.id}>
             <strong>{post.title}</strong>
             <p>{post.body}</p>
           </li>
@@ -46,6 +40,6 @@ const PostsComponent = () => {
       </ul>
     </div>
   );
-};
+}
 
 export default PostsComponent;
